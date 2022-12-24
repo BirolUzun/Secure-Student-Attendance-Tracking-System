@@ -2,11 +2,25 @@
 
 from flask import Blueprint, render_template, redirect, url_for, request, flash
 from werkzeug.security import generate_password_hash, check_password_hash
+from Crypto.Cipher import DES
 from flask_login import login_user, logout_user, login_required
 from .models import User
 from . import db
 
 auth = Blueprint('auth', __name__)
+DES_KEY = '481364984'
+
+
+def encrypt_des(message):
+    cipher = DES.new(DES_KEY, DES.MODE_ECB)
+    encrypted_message = cipher.encrypt(message)
+    return encrypted_message
+
+
+def decrypt_des(encrypted_message):
+    cipher = DES.new(DES_KEY, DES.MODE_ECB)
+    decrypted_message = cipher.decrypt(encrypted_message)
+    return decrypted_message.decode()
 
 
 @auth.route('/login')
@@ -24,7 +38,7 @@ def login_post():
 
     # check if user actually exists
     # take the user supplied password, hash it, and compare it to the hashed password in database
-    if not user or not check_password_hash(user.password, password):
+    if not user or not decrypt_des(user.password) == password:
         flash('Please check your login details and try again.')
         return redirect(url_for('auth.login'))  # if user doesn't exist or password is wrong, reload the page
 
@@ -52,7 +66,7 @@ def signup_post():
         return redirect(url_for('auth.signup'))
 
     # create new user with the form data. Hash the password so plaintext version isn't saved.
-    new_user = User(email=email, name=name, password=generate_password_hash(password, method='sha256'))
+    new_user = User(email=email, name=name, password=encrypt_des(password))
 
     # add the new user to the database
     db.session.add(new_user)
