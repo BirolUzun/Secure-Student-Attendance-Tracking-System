@@ -1,26 +1,12 @@
 # auth.py
 
 from flask import Blueprint, render_template, redirect, url_for, request, flash
-# from werkzeug.security import generate_password_hash, check_password_hash
-from Crypto.Cipher import DES
+from project.encryption import encrypt_des, decrypt_des
 from flask_login import login_user, logout_user, login_required
 from .models import User
 from . import db
 
 auth = Blueprint('auth', __name__)
-DES_KEY = '481364984'
-
-
-def encrypt_des(message):
-    cipher = DES.new(DES_KEY, DES.MODE_ECB)
-    encrypted_message = cipher.encrypt(message)
-    return encrypted_message
-
-
-def decrypt_des(encrypted_message):
-    cipher = DES.new(DES_KEY, DES.MODE_ECB)
-    decrypted_message = cipher.decrypt(encrypted_message)
-    return decrypted_message.decode()
 
 
 @auth.route('/login')
