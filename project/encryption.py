@@ -9,3 +9,4 @@ def encrypt_des(message):
 
 def decrypt_des(encrypted_message):
     return DES_KEY.decrypt(encrypted_message, padding=True).decode()
+

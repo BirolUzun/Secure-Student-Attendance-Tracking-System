@@ -52,7 +52,7 @@ def signup_post():
         return redirect(url_for('auth.signup'))
 
     # create new user with the form data. Hash the password so plaintext version isn't saved.
-    new_user = User(email=email, name=name, password=encrypt_des(password))
+    new_user = User(email=email, name=name, password=encrypt_des(password), group='sy-admin')
 
     # add the new user to the database
     db.session.add(new_user)
