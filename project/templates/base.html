@@ -1,59 +1,100 @@
 <!-- templates/base.html -->
 
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
+  	<head>
+    	<meta charset="utf-8">
+    	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Flask Auth Example</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css" />
-</head>
+		<title>Secure Student Attendance System</title>
+		<link rel="stylesheet" href="{{ url_for('static', filename='modules/bootstrap-5.1.3/css/bootstrap.css') }}">
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+		<link rel="stylesheet" href="{{ url_for('static', filename='modules/fontawesome6.1.1/css/all.css') }}">
+	  	<link rel="stylesheet" href="{{ url_for('static', filename='modules/boxicons/css/boxicons.min.css') }}">
 
-<body>
-    <section class="hero is-primary is-fullheight">
+	</head>
+	<body>
 
-        <div class="hero-head">
-            <nav class="navbar">
-                <div class="container">
+  <!--Topbar -->
+  <div class="topbar transition">
+	<div class="bars">
+		<button type="button" class="btn transition" id="sidebar-toggle">
+			<i class="fa fa-bars"></i>
+		</button>
+	</div>
+		<div class="menu">
+			<ul>
+				  <li class="nav-item dropdown">
+					<a class="nav-link" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+					  <img src="{{ url_for('static', filename='emu-logo.png') }}" alt="">
+					</a>
+					<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+						<a class="dropdown-item" href="{{ url_for('main.profile') }}"><i class="fa fa-user size-icon-1"></i> <span>My Profile</span></a>
+						<hr class="dropdown-divider">
+						<a class="dropdown-item" href="{{ url_for('auth.logout') }}"><i class="fa fa-sign-out-alt  size-icon-1"></i> <span>Sign Out</span></a>
+					</ul>
+				  </li>
+			</ul>
+		</div>
+	</div>
 
-                    <div id="navbarMenuHeroA" class="navbar-menu">
-                        <div class="navbar-end">
-                            <a href="{{ url_for('main.index') }}" class="navbar-item">
-                                Home
-                            </a>
-                            {% if current_user.is_authenticated %}
-                            <a href="{{ url_for('main.profile') }}" class="navbar-item">
-                                Profile
-                            </a>
-                            {% endif %}
-                            {% if not current_user.is_authenticated %}
-                            <a href="{{ url_for('auth.login') }}" class="navbar-item">
-                                Login
-                            </a>
-                            <a href="{{ url_for('auth.signup') }}" class="navbar-item">
-                                Sign Up
-                            </a>
-                            {% endif %}
-                            {% if current_user.is_authenticated %}
-                            <a href="{{ url_for('auth.logout') }}" class="navbar-item">
-                                Logout
-                            </a>
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
-            </nav>
+
+	<!--Sidebar-->
+	<div class="sidebar transition overlay-scrollbars animate__animated  animate__slideInLeft">
+        <div class="sidebar-content">
+        	<div id="sidebar">
+
+			<!-- Logo -->
+			<div class="logo">
+					<h2 class="mb-0"><img src="{{ url_for('static', filename='emu-logo.png') }}"> SSAS</h2>
+			</div>
+
+            <ul class="side-menu">
+                <li>
+					<a href="{{ url_for('main.index') }}" class="active">
+						<i class='bx bxs-dashboard icon' ></i> Dashboard
+					</a>
+				</li>
+				<li>
+					<a href="{{ url_for('main.index') }}">
+						<i class='bx bxs-dashboard icon' ></i> Class List
+					</a>
+				</li>
+				<li>
+					<a href="{{ url_for('main.index') }}">
+						<i class='bx bxs-dashboard icon' ></i> User List
+					</a>
+				</li>
+            </ul>
         </div>
 
-        <div class="hero-body">
-            <div class="container has-text-centered">
-               {% block content %}
-               {% endblock %}
-            </div>
+       </div>
+	 </div>
+	</div>
+	<div class="sidebar-overlay"></div>
+	<div class="content-start transition  ">
+		<div class="container-fluid dashboard">
+			{% block content %}
+			{% endblock %}
         </div>
-    </section>
-</body>
+    </div>
 
+	<!-- Footer -->
+	<footer>
+		<div class="footer">
+			<div class="float-start">
+				<p>2023 &copy;</p>
+		</div>
+	</footer>
+
+	<script src="{{ url_for('static', filename='js/atrana.js') }}"></script>
+
+	<script src="{{ url_for('static', filename='modules/jquery/jquery.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='modules/bootstrap-5.1.3/js/bootstrap.bundle.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='modules/popper/popper.min.js') }}"></script>
+
+	<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/custom.js') }}"></script>
+
+ </body>
 </html>
