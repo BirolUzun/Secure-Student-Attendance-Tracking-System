@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% with messages = get_flashed_messages() %}
+
+    {% if messages[0] == 0 %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            Kullanıcı<strong> başarıyla </strong>oluşturuldu.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endif %}
+    {% if messages[0] == 1 %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            Kullanıcı<strong> başarıyla </strong>silindi.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endif %}
+    {% if messages[0] == 2 %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            Kullanıcı yüzdeliği<strong> başarıyla </strong>değiştirildi.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endif %}
+    {% if messages[0] == 3 %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            Kullanıcı şifresi<strong> başarıyla </strong>değiştirildi.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+{% endif %}
+<a class="btn btn-primary btn-sm" href="{{ url_for('auth.createuser') }}"><span class="icon is-small"><i class="fas fa-plus"></i></span><span> Kullanıcı Ekle</span></a>
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Group</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <th>{{ user.id }}</th>
+                <th>{{ user.name }}</th>
+                <th>{{ user.email }}</th>
+                <th>{{ user.group }}</th>
+                <th>
+                    <div class="btn-group">
+                        <a class="btn btn-primary btn-sm" href="/usermanagement/editpass/{{ user.id }}"><span class="icon is-small"><i class="fas fa-lock"></i></span><span> Change Password</span></a>
+                        <a class="btn btn-warning btn-sm" href="/usermanagement/editpercentage/{{ user.id }}"><span class="icon is-small"><i class="fas fa-percentage"></i><i class="fas fa-pen"></i></span><span> Change Group</span></a>
+                        <a class="btn btn-danger btn-sm" href="/api/userdel/{{ user.id }}"><span class="icon is-small"><i class="fas fa-trash"></i></span><span> Remove User</span></a>
+                    </div>
+                </th>
+
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endwith %}
+{% endblock %}

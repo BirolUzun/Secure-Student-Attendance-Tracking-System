@@ -2,7 +2,7 @@
 
 from flask import Blueprint, render_template
 from flask_login import login_required, current_user
-from .models import Classes, Attendance, Parent, Teacher, User
+from .models import Classes, Attendance, Parent, User
 from . import db
 
 main = Blueprint('main', __name__)

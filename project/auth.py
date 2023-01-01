@@ -2,7 +2,7 @@
 
 from flask import Blueprint, render_template, redirect, url_for, request, flash
 from project.encryption import encrypt_des, decrypt_des
-from flask_login import login_user, logout_user, login_required
+from flask_login import login_user, logout_user, login_required, current_user
 from .models import User
 from . import db
 
@@ -62,6 +62,45 @@ if debug:
         db.session.commit()
 
         return redirect(url_for('auth.login'))
+
+@auth.route('/users')
+@login_required
+def users():
+    if current_user.group == "sy-admin":
+        users = User.query.all()
+        return render_template('users.html', users=users)
+    else:
+        return render_template('permerror.html')
+
+
+@auth.route('/users/create')
+@login_required
+def createuser():
+    return render_template('createuser.html')
+
+
+@auth.route('/users/create', methods=['POST'])
+@login_required
+def createuser_post():
+    email = request.form.get('email')
+    name = request.form.get('name')
+    password = request.form.get('password')
+
+    user = User.query.filter_by(
+        email=email).first()  # if this returns a user, then the email already exists in database
+
+    if user:  # if a user is found, we want to redirect back to signup page so user can try again
+        flash('Email address already exists')
+        return redirect(url_for('auth.signup'))
+
+    # create new user with the form data. Hash the password so plaintext version isn't saved.
+    new_user = User(email=email, name=name, password=encrypt_des(password), group='sy-admin')
+
+    # add the new user to the database
+    db.session.add(new_user)
+    db.session.commit()
+
+    return redirect(url_for('auth.createuser'))
 
 
 @auth.route('/logout')
