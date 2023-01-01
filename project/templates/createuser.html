@@ -42,6 +42,14 @@
         <option value="student" selected>Student</option>
     </select>
   </div>
+    <div class="mb-2">
+    <label for="InputPerm" class="form-label">Parent:</label>
+    <select class="form-select" name="parent" id="InputPerm">
+      {% for parent in parents %}
+        <option value="{{ parent.id }}" >{{ parent.name }} - {{parent.email}}</option>
+      {% endfor %}
+    </select>
+  </div>
   <button type="submit" class="btn btn-primary">Create User</button>
 </form>
 {% endwith %}

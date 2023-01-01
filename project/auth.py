@@ -63,6 +63,7 @@ if debug:
 
         return redirect(url_for('auth.login'))
 
+
 @auth.route('/users')
 @login_required
 def users():
@@ -70,13 +71,14 @@ def users():
         users = User.query.all()
         return render_template('users.html', users=users, current_user=current_user)
     else:
-        return render_template('permerror.html')
+        return redirect(url_for('main.index'))
 
 
 @auth.route('/users/create')
 @login_required
 def createuser():
-    return render_template('createuser.html')
+    parents = User.query.filter_by(group="parent").all()
+    return render_template('createuser.html', parents=parents)
 
 
 @auth.route('/users/create', methods=['POST'])
@@ -86,6 +88,7 @@ def createuser_post():
     name = request.form.get('name')
     password = request.form.get('password')
     group = request.form.get('group')
+    parent = request.form.get('parent')
 
     user = User.query.filter_by(
         email=email).first()  # if this returns a user, then the email already exists in database
@@ -95,7 +98,7 @@ def createuser_post():
         return redirect(url_for('auth.signup'))
 
     # create new user with the form data. Hash the password so plaintext version isn't saved.
-    new_user = User(email=email, name=name, password=encrypt_des(password), group=group)
+    new_user = User(email=email, name=name, password=encrypt_des(password), group=group, parent=parent)
 
     # add the new user to the database
     db.session.add(new_user)
@@ -111,7 +114,7 @@ def editpass(inid):
         target = User.query.filter_by(id=inid).first()
         return render_template('editpass.html', user=target)
     else:
-        return render_template('permerror.html')
+        return redirect(url_for('main.index'))
 
 
 # Root Olarak Farklı Kullanıcının Şifresini Değiştirme POST
@@ -132,7 +135,20 @@ def editpass_post(inid):
             return redirect(url_for('auth.editpass'))
 
     else:
-        return render_template('permerror.html')
+        return redirect(url_for('main.index'))
+
+
+@auth.route('/api/userdel/<inid>')
+@login_required
+def userdel(inid):
+    if current_user.group == "sy-admin":
+        target = User.query.filter_by(id=inid).first()
+        db.session.delete(target)
+        db.session.commit()
+        flash(1)
+        return redirect(url_for('auth.users'))
+    else:
+        return redirect(url_for('main.index'))
 
 
 @auth.route('/logout')

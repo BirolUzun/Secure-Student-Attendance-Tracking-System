@@ -51,35 +51,29 @@
 
             <ul class="side-menu">
                 <li>
-					<a href="{{ url_for('main.index') }}" class="active">
+					<a href="{{ url_for('main.index') }}">
 						<i class='bx bxs-dashboard icon' ></i> Dashboard
 					</a>
 				</li>
+				{% if current_user.group == "sy-admin" %}
 				<li>
 					<a href="{{ url_for('auth.users') }}">
 						<i class='bx bxs-dashboard icon' ></i> User Records
 					</a>
 				</li>
 				<li>
-					<a href="{{ url_for('main.index') }}">
+					<a href="{{ url_for('classes.classes_main') }}">
 						<i class='bx bxs-dashboard icon' ></i> Class Records
 					</a>
 				</li>
+				{% endif %}
+				{% if current_user.group == "sy-admin" and "chair"  %}
 				<li>
 					<a href="{{ url_for('main.index') }}">
 						<i class='bx bxs-dashboard icon' ></i> Department Records
 					</a>
 				</li>
-				<li>
-					<a href="{{ url_for('main.index') }}">
-						<i class='bx bxs-dashboard icon' ></i> Create New User
-					</a>
-				</li>
-				<li>
-					<a href="{{ url_for('main.index') }}">
-						<i class='bx bxs-dashboard icon' ></i> Create New Class
-					</a>
-				</li>
+				{% endif %}
             </ul>
         </div>
 

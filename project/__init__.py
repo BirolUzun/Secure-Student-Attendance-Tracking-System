@@ -20,7 +20,7 @@ def create_app():
     login_manager.login_view = 'auth.login'
     login_manager.init_app(app)
 
-    from .models import User
+    from .models import User, Classes, Attendance
 
     @login_manager.user_loader
     def load_user(user_id):
@@ -34,5 +34,8 @@ def create_app():
     # blueprint for non-auth parts of app
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
+
+    from .classes import classes as classes_blueprint
+    app.register_blueprint(classes_blueprint)
 
     return app

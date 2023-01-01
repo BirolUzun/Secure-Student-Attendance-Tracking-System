@@ -15,12 +15,6 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     {% endif %}
-    {% if messages[0] == 2 %}
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            Kullanıcı yüzdeliği<strong> başarıyla </strong>değiştirildi.
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    {% endif %}
     {% if messages[0] == 3 %}
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             Kullanıcı şifresi<strong> başarıyla </strong>değiştirildi.
@@ -36,6 +30,7 @@
                 <th>Name</th>
                 <th>Email</th>
                 <th>Group</th>
+                <th>Parent</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -46,6 +41,7 @@
                 <th>{{ user.name }}</th>
                 <th>{{ user.email }}</th>
                 <th>{{ user.group }}</th>
+                <th>{{ user.parent }}</th>
                 <th>
                     <div class="btn-group">
                         <a class="btn btn-primary btn-sm" href="/users/editpass/{{ user.id }}"><span class="icon is-small"><i class="fas fa-lock"></i></span><span> Change Password</span></a>

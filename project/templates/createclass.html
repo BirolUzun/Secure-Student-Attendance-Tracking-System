@@ -1,0 +1,38 @@
+<!-- templates/createclass.html -->
+
+{% extends "base.html" %}
+
+{% block content %}
+{% with messages = get_flashed_messages() %}
+{% if messages[0] == 1 %}
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+  Class<strong> başarıyla </strong>oluşturuldu.
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endif %}
+{% if messages[0] == 0 %}
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+  Email zaten mevcut.
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endif %}
+
+<form method="POST" action="/classes/create">
+  <h1 class="h3 mb-3 fw-normal">Class Oluşturma</h1>
+      <div class="mb-2">
+        <label for="InputUser1" class="form-label">Class Name:</label>
+        <input type="text" name="class_name" class="form-control" id="InputUser1">
+      </div>
+      <div class="mb-2">
+        <label for="InputPerm" class="form-label">Class Teacher:</label>
+        <select class="form-select" name="teacher_id" id="InputPerm">
+            <option value=1 >Test</option>
+            {% for teacher in teachers %}
+            <option value={{ teacher.id }}>{{ teacher.name }}</option>
+            {% endfor %}
+        </select>
+      </div>
+  <button type="submit" class="btn btn-primary">Create Class</button>
+</form>
+{% endwith %}
+{% endblock %}
