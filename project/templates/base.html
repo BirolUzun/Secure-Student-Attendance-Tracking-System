@@ -46,7 +46,7 @@
 
 			<!-- Logo -->
 			<div class="logo">
-					<h2 class="mb-0"><img src="{{ url_for('static', filename='emu-logo.png') }}"> SSAS</h2>
+					<h2 class="mb-0"><img src="{{ url_for('static', filename='emu-logo.png') }}"> SSATS</h2>
 			</div>
 
             <ul class="side-menu">
@@ -77,6 +77,13 @@
 				{% if current_user.group == "teacher"  %}
 				<li>
 					<a href="{{ url_for('attendance.attendance_main') }}">
+						<i class='bx bxs-dashboard icon' ></i> Class Records
+					</a>
+				</li>
+				{% endif %}
+				{% if current_user.group == "parents"  %}
+				<li>
+					<a href="{{ url_for('attendance.userattendance_list') }}">
 						<i class='bx bxs-dashboard icon' ></i> Class Records
 					</a>
 				</li>

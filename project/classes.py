@@ -22,7 +22,7 @@ def classes_del(inid):
         target = Classes.query.filter_by(class_id=inid).first()
         db.session.delete(target)
         db.session.commit()
-        flash(1)
+        flash("Class deleted successfully")
         return redirect(url_for('classes.classes_main'))
     else:
         return redirect(url_for('main.index'))

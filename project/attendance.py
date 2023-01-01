@@ -8,17 +8,6 @@ from datetime import date
 attendance = Blueprint('attendance', __name__)
 
 
-@attendance.route('/classlist')
-@login_required
-def attendance_main():
-    # Get current user's classes
-    if current_user.group == "sy-admin" or "chair":
-        classes = Classes.query.all()
-    elif current_user.group == "teacher":
-        classes = Classes.query.filter_by(teacher_id=current_user.id).all()
-    return render_template('classlist.html', classes=classes)
-
-
 @attendance.route('/userattendance/<inid>')
 @login_required
 def userattendance_main():
@@ -32,10 +21,23 @@ def userattendance_main():
 def userattendance_list():
     if current_user.group == "sy-admin" or "chair":
         users = User.query.filter_by(group="student").all()
+        return render_template('attendancelistuser.html', users=users)
     elif current_user.group == "parent":
         users = User.query.filter_by(parent_id=current_user.id).all()
+        return render_template('attendancelistuser.html', users=users)
+    else:
+        return redirect(url_for('main.index'))
 
-    return render_template('attendancelistuser.html', users=users)
+
+@attendance.route('/classlist')
+@login_required
+def attendance_main():
+    # Get current user's classes
+    if current_user.group == "sy-admin" or "chair":
+        classes = Classes.query.all()
+    elif current_user.group == "teacher":
+        classes = Classes.query.filter_by(teacher_id=current_user.id).all()
+    return render_template('classlist.html', classes=classes)
 
 
 @attendance.route('/classlist/today/<inid>')
@@ -65,10 +67,12 @@ def attendance_create(inid):
                     'attendance': 0
                 })
 
-        return render_template('attendancecreate.html', students=student_list, student_names=student_names, class_id=inid, date=today)
+        return render_template('attendancecreate.html', students=student_list, student_names=student_names,
+                               class_id=inid, date=today)
     else:
         flash('There is no student in this class')
         return redirect(url_for('attendance.attendance_main'))
+
 
 @attendance.route('/classlist/list/<inid>')
 @login_required
@@ -77,19 +81,17 @@ def attendance_list(inid):
     attendance = Attendance.query.filter_by(class_id=inid).all()
     # remove duplicate dates
     dates = []
-    for date in  attendance:
+    for date in attendance:
         dates.append({
-                "date": date.date,
-                "class_id": date.class_id
-         })
+            "date": date.date,
+            "class_id": date.class_id
+        })
     dates = [i for n, i in enumerate(dates) if i not in dates[n + 1:]]
 
     for a in attendance:
         print(a.date)
 
-
     return render_template('oldattendancelist.html', attendance=dates)
-
 
 
 @attendance.route('/classlist/old/<inid>/<olddate>')
@@ -117,8 +119,8 @@ def attendance_old(inid, olddate):
                 'attendance': 0
             })
 
-
-    return render_template('attendancecreate.html', students=student_list, student_names=student_names, class_id=inid, date=today)
+    return render_template('attendancecreate.html', students=student_list, student_names=student_names, class_id=inid,
+                           date=today)
 
 
 @attendance.route('/classlist/mark/<user_id>/<class_id>/<reqdate>/<mark>')
