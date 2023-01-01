@@ -19,14 +19,23 @@ def userattendance_main(inid):
         inid = current_user.id
 
     # get attendance class info
-    attendance = Attendance.query.filter_by(user_id=inid).all()
+    attendance = Attendance.query.filter_by(student_id=inid).all()
 
+    classes_ids = []
+    for i in attendance:
+        for j in attendance:
+            if i.class_id != j.class_id:
+                    classes_ids.append(i.class_id)
 
+    # remove duplicates from list of classes
+    classes_ids = list(dict.fromkeys(classes_ids))
 
+    # get class info
+    class_infos = []
+    for i in classes_ids:
+        class_infos.append(Classes.query.filter_by(class_id=i).first())
 
-
-
-    print(print_attendance)
+    print(class_infos)
 
     return render_template('attendanceprint.html', attendance=print_attendance, user=current_user)
 
