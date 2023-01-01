@@ -3,37 +3,46 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="column is-4 is-offset-4">
-    <h3 class="title">Create User</h3>
-    <div class="box">
-        {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            <div class="notification is-danger">
-                {{ messages[0] }}.
-            </div>
-        {% endif %}
-        {% endwith %}
-        <form method="POST" action="/signup">
-            <div class="field">
-                <div class="control">
-                    <input class="input is-large" type="email" name="email" placeholder="Email" autofocus="">
-                </div>
-            </div>
-
-            <div class="field">
-                <div class="control">
-                    <input class="input is-large" type="text" name="name" placeholder="Name" autofocus="">
-                </div>
-            </div>
-
-            <div class="field">
-                <div class="control">
-                    <input class="input is-large" type="password" name="password" placeholder="Password">
-                </div>
-            </div>
-
-            <button class="button is-block is-info is-large is-fullwidth">Sign Up</button>
-        </form>
-    </div>
+{% with messages = get_flashed_messages() %}
+{% if messages[0] == 1 %}
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+  Kullanıcı<strong> başarıyla </strong>oluşturuldu.
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
+{% endif %}
+{% if messages[0] == 0 %}
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+  Email zaten mevcut.
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endif %}
+
+<form method="POST" action="/users/create">
+  <h1 class="h3 mb-3 fw-normal">Kullanıcı Oluşturma</h1>
+  <div class="mb-2">
+    <label for="InputUser1" class="form-label">İsim:</label>
+    <input type="text" name="name" class="form-control" id="InputUser1">
+  </div>
+  <div class="mb-2">
+    <label for="InputEmail1" class="form-label">Email:</label>
+    <input type="email" name="email" class="form-control {% if messages[0] == 0 %} is-invalid {% endif %}" id="InputEmail1" aria-describedby="emailHelp">
+    <div id="emailHelp" class="form-text">Başka bir mail adresi ile aynı olmaması lazım!</div>
+  </div>
+  <div class="mb-2">
+    <label for="InputPassword1" class="form-label">Şifre:</label>
+    <input type="password" class="form-control" name="password" id="InputPassword1">
+  </div>
+  <div class="mb-2">
+    <label for="InputPerm" class="form-label">Yetki:</label>
+    <select class="form-select" name="group" id="InputPerm">
+        <option value="sy-admin" >System Admin</option>
+        <option value="chair" >Chair</option>
+        <option value="teacher" >Teacher</option>
+        <option value="parent" >Parent</option>
+        <option value="student" selected>Student</option>
+    </select>
+  </div>
+  <button type="submit" class="btn btn-primary">Create User</button>
+</form>
+{% endwith %}
 {% endblock %}

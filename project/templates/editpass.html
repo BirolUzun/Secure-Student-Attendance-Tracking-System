@@ -1,0 +1,30 @@
+<!-- templates/editpass.html -->
+
+{% extends "base.html" %}
+
+{% block content %}
+{% with messages = get_flashed_messages() %}
+
+{% if messages[0] == 2 %}
+  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <strong>Uyarı!</strong> Şifreler biribiriyle uyuşmuyor.
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+{% endif %}
+
+<form method="POST" action="/api/editpass/{{ user.id }}">
+  <h1 class="h3 mb-3 fw-normal"><strong>"{{ user.name }}"</strong> Kullanıcısının Şifresini Değiştiriyorsunuz</h1>
+
+  <div class="form-floating mb-3">
+    <input type="password" class="form-control {% if messages[0] == 2 %} is-invalid {% endif %}" id="floatingPassword" name="password1" placeholder="Şifre">
+    <label for="floatingPassword">Şifre</label>
+  </div>
+  <div class="form-floating mb-3">
+      <input type="password" class="form-control {% if messages[0] == 2 %} is-invalid {% endif %}" id="floatingPassword" name="password2" placeholder="Şifre">
+      <label for="floatingPassword">Şifre Tekrar</label>
+  </div>
+
+  <button class="w-100 btn btn-lg btn-primary" type="submit">Change Password</button>
+</form>
+{% endwith %}
+{% endblock %}

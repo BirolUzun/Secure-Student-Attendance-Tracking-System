@@ -68,7 +68,7 @@ if debug:
 def users():
     if current_user.group == "sy-admin":
         users = User.query.all()
-        return render_template('users.html', users=users)
+        return render_template('users.html', users=users, current_user=current_user)
     else:
         return render_template('permerror.html')
 
@@ -85,6 +85,7 @@ def createuser_post():
     email = request.form.get('email')
     name = request.form.get('name')
     password = request.form.get('password')
+    group = request.form.get('group')
 
     user = User.query.filter_by(
         email=email).first()  # if this returns a user, then the email already exists in database
@@ -94,13 +95,44 @@ def createuser_post():
         return redirect(url_for('auth.signup'))
 
     # create new user with the form data. Hash the password so plaintext version isn't saved.
-    new_user = User(email=email, name=name, password=encrypt_des(password), group='sy-admin')
+    new_user = User(email=email, name=name, password=encrypt_des(password), group=group)
 
     # add the new user to the database
     db.session.add(new_user)
     db.session.commit()
 
-    return redirect(url_for('auth.createuser'))
+    return redirect(url_for('auth.users'))
+
+
+@auth.route('/users/editpass/<inid>')
+@login_required
+def editpass(inid):
+    if current_user.group == "sy-admin":
+        target = User.query.filter_by(id=inid).first()
+        return render_template('editpass.html', user=target)
+    else:
+        return render_template('permerror.html')
+
+
+# Root Olarak Farklı Kullanıcının Şifresini Değiştirme POST
+@auth.route('/api/editpass/<inid>', methods=['POST'])
+@login_required
+def editpass_post(inid):
+    if current_user.group == "sy-admin":
+        target = User.query.filter_by(id=inid).first()
+        password1 = request.form.get('password1')
+        password2 = request.form.get('password2')
+        if password1 == password2:
+            target.password = encrypt_des(password1)
+            db.session.commit()
+            flash(3)
+            return redirect(url_for('auth.users'))
+        else:
+            flash(2)
+            return redirect(url_for('auth.editpass'))
+
+    else:
+        return render_template('permerror.html')
 
 
 @auth.route('/logout')

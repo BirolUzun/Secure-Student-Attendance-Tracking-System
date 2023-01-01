@@ -27,7 +27,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
 {% endif %}
-<a class="btn btn-primary btn-sm" href="{{ url_for('auth.createuser') }}"><span class="icon is-small"><i class="fas fa-plus"></i></span><span> Kullanıcı Ekle</span></a>
+<a class="btn btn-primary btn-sm" href="{{ url_for('auth.createuser') }}"><span class="icon is-small"><i class="fas fa-plus"></i></span><span> Add User</span></a>
 <div class="table-responsive">
     <table class="table">
         <thead>
@@ -48,9 +48,8 @@
                 <th>{{ user.group }}</th>
                 <th>
                     <div class="btn-group">
-                        <a class="btn btn-primary btn-sm" href="/usermanagement/editpass/{{ user.id }}"><span class="icon is-small"><i class="fas fa-lock"></i></span><span> Change Password</span></a>
-                        <a class="btn btn-warning btn-sm" href="/usermanagement/editpercentage/{{ user.id }}"><span class="icon is-small"><i class="fas fa-percentage"></i><i class="fas fa-pen"></i></span><span> Change Group</span></a>
-                        <a class="btn btn-danger btn-sm" href="/api/userdel/{{ user.id }}"><span class="icon is-small"><i class="fas fa-trash"></i></span><span> Remove User</span></a>
+                        <a class="btn btn-primary btn-sm" href="/users/editpass/{{ user.id }}"><span class="icon is-small"><i class="fas fa-lock"></i></span><span> Change Password</span></a>
+                        {% if user.id != current_user.id %}<a class="btn btn-danger btn-sm" href="/api/userdel/{{ user.id }}"><span class="icon is-small"><i class="fas fa-trash"></i></span><span> Remove User</span></a>{% endif %}
                     </div>
                 </th>
 
