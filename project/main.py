@@ -18,3 +18,8 @@ def index():
 @login_required
 def profile():
     return render_template('profile.html', name=current_user.name, group=current_user.group)
+
+@main.route('/ViewStudentRecords')
+@login_required
+def ViewStudentRecords():
+    return render_template('ViewStudentRecords.html')
