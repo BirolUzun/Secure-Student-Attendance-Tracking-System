@@ -19,6 +19,7 @@ def index():
 def profile():
     return render_template('profile.html', name=current_user.name, group=current_user.group)
 
+
 @main.route('/ViewStudentRecords')
 @login_required
 def ViewStudentRecords():

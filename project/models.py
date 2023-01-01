@@ -21,6 +21,7 @@ class Classes(db.Model):
 class Attendance(db.Model):
     attendance_id = db.Column(db.Integer, primary_key=True)  # primary keys are required by SQLAlchemy
     class_id = db.Column(db.Integer)
+    date = db.Column(db.String(100))
     student_id = db.Column(db.Integer)
     is_absent = db.Column(db.Boolean)
 
@@ -28,9 +29,3 @@ class Attendance(db.Model):
 class Parent(db.Model):
     parent_id = db.Column(db.Integer, primary_key=True)  # primary keys are required by SQLAlchemy
     student_id = db.Column(db.Integer)
-    parent_phone = db.Column(db.String(100))
-
-
-class Teacher(db.Model):
-    teacher_id = db.Column(db.Integer, primary_key=True)  # primary keys are required by SQLAlchemy
-    teacher_phone = db.Column(db.String(100))
