@@ -69,7 +69,7 @@
 				{% endif %}
 				{% if current_user.group == "sy-admin" and "chair"  %}
 				<li>
-					<a href="{{ url_for('attendance.attendance_main') }}">
+					<a href="{{ url_for('attendance.userattendance_list') }}">
 						<i class='bx bxs-dashboard icon' ></i> Department Records
 					</a>
 				</li>

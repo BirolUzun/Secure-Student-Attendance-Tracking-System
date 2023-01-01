@@ -10,16 +10,34 @@ attendance = Blueprint('attendance', __name__)
 
 @attendance.route('/userattendance/<inid>')
 @login_required
-def userattendance_main():
-    # Get current user's classes
-    classes = Classes.query.filter_by(teacher_id=current_user.id).all()
-    return render_template('classlist.html', classes=classes)
+def userattendance_main(inid):
+    # Get user info
+    user = User.query.filter_by(id=inid).first()
+    print_attendance = []
+
+    if current_user.group == 'student':
+        inid = current_user.id
+
+    # get attendance class info
+    attendance = Attendance.query.filter_by(user_id=inid).all()
+
+
+
+
+
+
+    print(print_attendance)
+
+    return render_template('attendanceprint.html', attendance=print_attendance, user=current_user)
 
 
 @attendance.route('/userattendancelist')
 @login_required
 def userattendance_list():
-    if current_user.group == "sy-admin" or "chair":
+    if current_user.group == "sy-admin":
+        users = User.query.filter_by(group="student").all()
+        return render_template('attendancelistuser.html', users=users)
+    elif current_user.group == "chair":
         users = User.query.filter_by(group="student").all()
         return render_template('attendancelistuser.html', users=users)
     elif current_user.group == "parent":
@@ -33,19 +51,32 @@ def userattendance_list():
 @login_required
 def attendance_main():
     # Get current user's classes
-    if current_user.group == "sy-admin" or "chair":
+    if current_user.group == "sy-admin":
+        classes = Classes.query.all()
+    elif current_user.group == "chair":
         classes = Classes.query.all()
     elif current_user.group == "teacher":
         classes = Classes.query.filter_by(teacher_id=current_user.id).all()
+    elif current_user.group == "parent":
+        classes = Classes.query.filter_by(parent_id=current_user.id).all()
+
     return render_template('classlist.html', classes=classes)
 
 
 @attendance.route('/classlist/today/<inid>')
 @login_required
 def attendance_create(inid):
-    student_names = []
-    # Get today's date
     today = date.today()
+    # If this is first time attendance is being taken for this class set all students to absent
+    if Attendance.query.filter_by(class_id=inid, date=today).first() is None:
+        students = User.query.filter_by(class_id=inid).all()
+        for student in students:
+            new_attendance = Attendance(class_id=inid, student_id=student.id, date=date.today(), absents=1, presents=0)
+            db.session.add(new_attendance)
+            db.session.commit()
+    if current_user.group != "teacher" and current_user.group != "sy-admin" and current_user.group != "chair":
+        return redirect(url_for('main.index'))
+    student_names = []
     # get students in class
     students = Classes.query.filter_by(class_id=inid).first()
     if students.student_list is not None:
@@ -77,6 +108,8 @@ def attendance_create(inid):
 @attendance.route('/classlist/list/<inid>')
 @login_required
 def attendance_list(inid):
+    if current_user.group != "teacher" and current_user.group != "sy-admin" and current_user.group != "chair":
+        return redirect(url_for('main.index'))
     # Get all attendance for class but remove duplicate dates
     attendance = Attendance.query.filter_by(class_id=inid).all()
     # remove duplicate dates
@@ -97,6 +130,8 @@ def attendance_list(inid):
 @attendance.route('/classlist/old/<inid>/<olddate>')
 @login_required
 def attendance_old(inid, olddate):
+    if current_user.group != "teacher" and current_user.group != "sy-admin" and current_user.group != "chair":
+        return redirect(url_for('main.index'))
     today = olddate
     # get students in class
     students = Classes.query.filter_by(class_id=inid).first()
@@ -126,6 +161,8 @@ def attendance_old(inid, olddate):
 @attendance.route('/classlist/mark/<user_id>/<class_id>/<reqdate>/<mark>')
 @login_required
 def attendance_mark(user_id, class_id, reqdate, mark):
+    if current_user.group != "teacher" and current_user.group != "sy-admin" and current_user.group != "chair":
+        return redirect(url_for('main.index'))
     # Check if attendance already exists
     attendance = Attendance.query.filter_by(class_id=class_id
                                             , student_id=user_id
