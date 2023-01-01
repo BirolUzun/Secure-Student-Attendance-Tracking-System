@@ -3,24 +3,12 @@
 {% block content %}
 {% with messages = get_flashed_messages() %}
 
-    {% if messages[0] == 0 %}
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            Kullanıcı<strong> başarıyla </strong>oluşturuldu.
+    {% if messages %}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong> {{ messages[0] }}. </strong>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     {% endif %}
-    {% if messages[0] == 1 %}
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            Kullanıcı<strong> başarıyla </strong>silindi.
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    {% endif %}
-    {% if messages[0] == 3 %}
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            Kullanıcı şifresi<strong> başarıyla </strong>değiştirildi.
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-{% endif %}
 <a class="btn btn-primary btn-sm" href="{{ url_for('auth.createuser') }}"><span class="icon is-small"><i class="fas fa-plus"></i></span><span> Add User</span></a>
 <div class="table-responsive">
     <table class="table">

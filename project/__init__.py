@@ -38,4 +38,7 @@ def create_app():
     from .classes import classes as classes_blueprint
     app.register_blueprint(classes_blueprint)
 
+    from .attendance import attendance as attendance_blueprint
+    app.register_blueprint(attendance_blueprint)
+
     return app

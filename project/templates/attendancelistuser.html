@@ -9,29 +9,27 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     {% endif %}
-<a class="btn btn-primary btn-sm" href="{{ url_for('classes.classescreate') }}"><span class="icon is-small"><i class="fas fa-plus"></i></span><span> Add Class</span></a>
 <div class="table-responsive">
     <table class="table">
         <thead>
             <tr>
                 <th>ID</th>
-                <th>Class Name</th>
-                <th>Teacher Name</th>
+                <th>Name</th>
+                <th>Email</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
-            {% for class in classes %}
+            {% for user in users %}
             <tr>
-                <th>{{ class.class_id }}</th>
-                <th>{{ class.class_name }}</th>
-                <th>{{ class.name }}</th>
+                <th>{{ user.id }}</th>
+                <th>{{ user.name }}</th>
+                <th>{{ user.email }}</th>
                 <th>
                     <div class="btn-group">
-                        <a class="btn btn-danger btn-sm" href="/api/classdel/{{ class.class_id }}"><span class="icon is-small"><i class="fas fa-trash"></i></span><span> Remove Class</span></a>
+                        <a class="btn btn-primary btn-sm" href="/userattendance/{{ user.id }}"><span class="icon is-small"><i class="fas fa-lock"></i></span><span> View Attendance</span></a>
                     </div>
                 </th>
-
             </tr>
             {% endfor %}
         </tbody>

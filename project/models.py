@@ -17,6 +17,8 @@ class Classes(UserMixin, db.Model):
     class_id = db.Column(db.Integer, primary_key=True)  # primary keys are required by SQLAlchemy
     class_name = db.Column(db.String(100))
     teacher_id = db.Column(db.Integer)
+    student_list = db.Column(db.String(10000))
+
 
 
 class Attendance(db.Model):
@@ -24,4 +26,4 @@ class Attendance(db.Model):
     class_id = db.Column(db.Integer)
     date = db.Column(db.String(100))
     student_id = db.Column(db.Integer)
-    is_absent = db.Column(db.Boolean)
+    is_absent = db.Column(db.Integer)

@@ -26,7 +26,7 @@
 			<ul>
 				  <li class="nav-item dropdown">
 					<a class="nav-link" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-					  <img src="{{ url_for('static', filename='emu-logo.png') }}" alt="">
+					  <img src="{{ url_for('static', filename='user.png') }}" alt="">
 					</a>
 					<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
 						<a class="dropdown-item" href="{{ url_for('main.profile') }}"><i class="fa fa-user size-icon-1"></i> <span>My Profile</span></a>
@@ -69,8 +69,15 @@
 				{% endif %}
 				{% if current_user.group == "sy-admin" and "chair"  %}
 				<li>
-					<a href="{{ url_for('main.index') }}">
+					<a href="{{ url_for('attendance.attendance_main') }}">
 						<i class='bx bxs-dashboard icon' ></i> Department Records
+					</a>
+				</li>
+				{% endif %}
+				{% if current_user.group == "teacher"  %}
+				<li>
+					<a href="{{ url_for('attendance.attendance_main') }}">
+						<i class='bx bxs-dashboard icon' ></i> Class Records
 					</a>
 				</li>
 				{% endif %}

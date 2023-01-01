@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% with messages = get_flashed_messages() %}
+
+    {% if messages %}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong> {{ messages[0] }}. </strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endif %}
+  <h1 class="h1 mb-3 fw-normal">Taking Attendance for {{date}}</h1>
+<h3 class="h4 mb-3 fw-normal"> Class ID: {{class_id}} </h3>
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for student in student_names %}
+            <tr>
+                <th>{{ student.id }}</th>
+                <th>{{ student.name }}</th>
+                <th>
+                    <div class="btn-group">
+                       {% if student.attendance == 0 %} <a class="btn btn-success btn-sm" href="/classlist/mark/{{ student.id }}/{{ class_id }}/{{ date }}/1"><span class="icon is-small"><i class="fa-solid fa-check"></i></span><span> Mark Present</span></a>{% endif %}
+                        {% if student.attendance == 1 %} <a class="btn btn-danger btn-sm" href="/classlist/mark/{{ student.id }}/{{ class_id }}/{{ date }}/0"><span class="icon is-small"><i class="fa-solid fa-times"></i></span><span> Mark Absent</span></a>{% endif %}
+                    </div>
+                </th>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endwith %}
+{% endblock %}
