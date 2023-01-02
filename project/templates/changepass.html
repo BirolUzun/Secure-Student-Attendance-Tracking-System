@@ -5,14 +5,14 @@
 {% block content %}
 {% with messages = get_flashed_messages() %}
 
-{% if messages[0] == 2 %}
-  <div class="alert alert-danger alert-dismissible fade show" role="alert">
-    <strong>Uyarı!</strong> Şifreler biribiriyle uyuşmuyor.
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-  </div>
-{% endif %}
+    {% if messages %}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong> {{ messages }}. </strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endif %}
 
-<form method="POST" action="/api/changepass">
+<form method="POST" action="/changepass">
   <h1 class="h3 mb-3 fw-normal">Şifre Değiştirme</h1>
 
   <div class="form-floating mb-3">

@@ -29,7 +29,8 @@
 					  <img src="{{ url_for('static', filename='user.png') }}" alt="">
 					</a>
 					<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-						<a class="dropdown-item" href="{{ url_for('main.profile') }}"><i class="fa fa-user size-icon-1"></i> <span>My Profile</span></a>
+						<a class="dropdown-item" href="{{ url_for('main.profile') }}">{{current_user.name}} - {{current_user.group}}</a>
+						<a class="dropdown-item" href="{{ url_for('auth.changepass') }}"><i class="fa fa-user size-icon-1"></i> <span>Change Password</span></a>
 						<hr class="dropdown-divider">
 						<a class="dropdown-item" href="{{ url_for('auth.logout') }}"><i class="fa fa-sign-out-alt  size-icon-1"></i> <span>Sign Out</span></a>
 					</ul>
@@ -67,7 +68,14 @@
 					</a>
 				</li>
 				{% endif %}
-				{% if current_user.group == "sy-admin" and "chair"  %}
+				{% if current_user.group == "sy-admin" %}
+				<li>
+					<a href="{{ url_for('attendance.userattendance_list') }}">
+						<i class='bx bxs-dashboard icon' ></i> Department Records
+					</a>
+				</li>
+				{% endif %}
+				{% if current_user.group == "chair" %}
 				<li>
 					<a href="{{ url_for('attendance.userattendance_list') }}">
 						<i class='bx bxs-dashboard icon' ></i> Department Records
@@ -78,6 +86,20 @@
 				<li>
 					<a href="{{ url_for('attendance.attendance_main') }}">
 						<i class='bx bxs-dashboard icon' ></i> Class Records
+					</a>
+				</li>
+				{% endif %}
+				{% if current_user.group == "chair"  %}
+				<li>
+					<a href="{{ url_for('attendance.attendance_main') }}">
+						<i class='bx bxs-dashboard icon' ></i> Class Records
+					</a>
+				</li>
+				{% endif %}
+				{% if current_user.group == "sy-admin"  %}
+				<li>
+					<a href="{{ url_for('attendance.attendance_main') }}">
+						<i class='bx bxs-dashboard icon' ></i> Attendance Records
 					</a>
 				</li>
 				{% endif %}

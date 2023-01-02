@@ -23,9 +23,7 @@ def userattendance_main(inid):
 
     classes_ids = []
     for i in attendance:
-        for j in attendance:
-            if i.class_id != j.class_id:
-                    classes_ids.append(i.class_id)
+        classes_ids.append(i.class_id)
 
     # remove duplicates from list of classes
     classes_ids = list(dict.fromkeys(classes_ids))
@@ -35,9 +33,9 @@ def userattendance_main(inid):
     for i in classes_ids:
         class_infos.append(Classes.query.filter_by(class_id=i).first())
 
-    print(class_infos)
+    print(classes_ids)
 
-    return render_template('attendanceprint.html', attendance=print_attendance, user=current_user)
+    return render_template('attendanceprint.html', attendance=class_infos, user=current_user)
 
 
 @attendance.route('/userattendancelist')
@@ -66,8 +64,8 @@ def attendance_main():
         classes = Classes.query.all()
     elif current_user.group == "teacher":
         classes = Classes.query.filter_by(teacher_id=current_user.id).all()
-    elif current_user.group == "parent":
-        classes = Classes.query.filter_by(parent_id=current_user.id).all()
+    else:
+        return redirect(url_for('main.index'))
 
     return render_template('classlist.html', classes=classes)
 
@@ -78,9 +76,9 @@ def attendance_create(inid):
     today = date.today()
     # If this is first time attendance is being taken for this class set all students to absent
     if Attendance.query.filter_by(class_id=inid, date=today).first() is None:
-        students = User.query.filter_by(class_id=inid).all()
+        students = User.query.filter_by(id=inid).all()
         for student in students:
-            new_attendance = Attendance(class_id=inid, student_id=student.id, date=date.today(), absents=1, presents=0)
+            new_attendance = Attendance(class_id=inid, student_id=student.id, date=date.today(), is_absent=0)
             db.session.add(new_attendance)
             db.session.commit()
     if current_user.group != "teacher" and current_user.group != "sy-admin" and current_user.group != "chair":

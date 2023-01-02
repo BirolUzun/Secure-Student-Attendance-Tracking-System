@@ -45,6 +45,7 @@
     <div class="mb-2">
     <label for="InputPerm" class="form-label">Parent:</label>
     <select class="form-select" name="parent" id="InputPerm">
+        <option value="" selected>None</option>
       {% for parent in parents %}
         <option value="{{ parent.id }}" >{{ parent.name }} - {{parent.email}}</option>
       {% endfor %}

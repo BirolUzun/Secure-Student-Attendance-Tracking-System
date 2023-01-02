@@ -2,7 +2,7 @@
 
 {% block content %}
 {% with messages = get_flashed_messages() %}
-<h1 class="h1 mb-3 fw-normal">Attendance List</h1>
+<h1 class="h1 mb-3 fw-normal">Lecture List</h1>
     {% if messages %}
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
             <strong> {{ messages[0] }}. </strong>
@@ -15,7 +15,6 @@
             <tr>
                 <th>ID</th>
                 <th>Class Name</th>
-                <th>Teacher Name</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -23,8 +22,7 @@
             {% for at in attendance %}
             <tr>
                 <th>{{ at.class_id }}</th>
-                <th>{{ at.class_id }}</th>
-                <th>{{ at.name }}</th>
+                <th>{{ at.class_name }}</th>
                 <th>
                     <div class="btn-group">
                         <a class="btn btn-primary btn-sm" href=""><span class="icon is-small"><i class="fas fa-plus"></i></span><span> Details</span></a>

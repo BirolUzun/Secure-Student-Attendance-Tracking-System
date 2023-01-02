@@ -150,6 +150,29 @@ def userdel(inid):
     else:
         return redirect(url_for('main.index'))
 
+# Şifre Değiştirme Ekranı
+@auth.route('/changepass')
+@login_required
+def changepass():
+    print(current_user.id)
+    return render_template('changepass.html', name=current_user.name)
+
+# Şifre Değiştirme POST
+@auth.route('/changepass', methods=['POST'])
+@login_required
+def changepass_post():
+    target = User.query.filter_by(id=current_user.id).first()
+    password1 = request.form.get('password1')
+    password2 = request.form.get('password2')
+    if password1 == password2:
+        target.password=encrypt_des(password1)
+        db.session.commit()
+        flash("Password Changed")
+        return redirect(url_for('main.index'))
+    else:
+        flash("Passwords are not same")
+        return redirect(url_for('auth.changepass'))
+
 
 @auth.route('/logout')
 @login_required
